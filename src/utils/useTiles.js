@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { isElementOfType } from 'react-dom/test-utils';
+import { useState } from 'react';
 import Tile from '../components/Tile';
 
 let count = 0;
