@@ -1,12 +1,12 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { useSwipeable } from 'react-swipeable';
+
 import { useTiles } from '../utils/useTiles';
 
 const grid_size = 4;
 
-export default function Board() {
+export default function Board({ onGameOver, onSetScore }) {
     const tiles = useTiles(grid_size);
-    const ref = useRef(null);
 
     const swipeable = useSwipeable({
         preventScrollOnSwipe: true,
@@ -41,16 +41,21 @@ export default function Board() {
         tiles.insertNewTile();
         tiles.insertNewTile();
     }, []);
+    useEffect(() => {
+        if (tiles.gameOver) {
+            onGameOver();
+        }
+    }, [tiles.gameOver]);
+    useEffect(() => {
+        onSetScore(tiles.score);
+    }, [tiles.score]);
 
-    return <>
-        {!tiles.gameOver ? <div ref={ref} className='board' style={{ "--grid-size": grid_size }} onKeyDown={handleKeyDown} {...swipeable} tabIndex={0}>
-            {
-                Array(grid_size * grid_size).fill(0).map((_, i) => <div className='cell' key={i}></div>)
-            }
-            {
-                tiles.tiles.map((tile) => { return { ...tile.element, key: tile.key } })
-            }
-        </div> : <div className='game-over'>Game Over</div>}
-        <div className='score'>Score: {tiles.score}</div>
-    </>
+    return <div className='board' style={{ "--grid-size": grid_size }} onKeyDown={handleKeyDown} {...swipeable} tabIndex={0}>
+        {
+            Array(grid_size * grid_size).fill(0).map((_, i) => <div className='cell' key={i}></div>)
+        }
+        {
+            tiles.tiles.map((tile) => { return { ...tile.element, key: tile.key } })
+        }
+    </div>
 }

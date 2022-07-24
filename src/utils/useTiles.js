@@ -59,6 +59,7 @@ export function useTiles(grid_size) {
     function moveTiles(direction) {
         const newTiles = [...tiles];
         let merged = false;
+        let mergedValue = 0;
         let moved = false;
         for (let i = 0; i < grid_size; i++) {
             const tilesByRow = selectTilesByRow(i);
@@ -74,6 +75,7 @@ export function useTiles(grid_size) {
                             changeTileValue(leftTile, leftTile.value * 2, leftTile.x, leftTile.y);
                             changeTileValue(tile, 0, leftTile.x, leftTile.y);
                             merged = true;
+                            mergedValue += leftTile.value
                             moved = true;
                         }
                         while (tile.x > 0 && (!leftTile || tile.x > leftTile.x + 1)) {
@@ -92,6 +94,7 @@ export function useTiles(grid_size) {
                             changeTileValue(rightTile, rightTile.value * 2, rightTile.x, rightTile.y);
                             changeTileValue(tile, 0, rightTile.x, rightTile.y);
                             merged = true;
+                            mergedValue += rightTile.value
                             moved = true;
                         }
                         while (tile.x < grid_size - 1 && (!rightTile || tile.x < rightTile.x - 1)) {
@@ -110,6 +113,7 @@ export function useTiles(grid_size) {
                             changeTileValue(upTile, upTile.value * 2, upTile.x, upTile.y);
                             changeTileValue(tile, 0, upTile.x, upTile.y);
                             merged = true;
+                            mergedValue += upTile.value;
                             moved = true;
                         }
                         while (tile.y > 0 && (!upTile || tile.y > upTile.y + 1)) {
@@ -128,6 +132,7 @@ export function useTiles(grid_size) {
                             changeTileValue(downTile, downTile.value * 2, downTile.x, downTile.y);
                             changeTileValue(tile, 0, downTile.x, downTile.y);
                             merged = true;
+                            mergedValue += downTile.value;
                             moved = true;
                         }
                         while (tile.y < grid_size - 1 && (!downTile || tile.y < downTile.y - 1)) {
@@ -142,7 +147,7 @@ export function useTiles(grid_size) {
             }
         }
         if (merged) {
-            setScore(prevScore => prevScore + 1);
+            setScore(prevScore => prevScore + mergedValue);
         }
         if (moved) {
             newTiles.push(createTile());
