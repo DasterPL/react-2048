@@ -1,6 +1,7 @@
 {
   "name": "2048",
   "version": "0.1.0",
+  "homepage": "https://dasterpl.github.io/react-2048/",
   "private": true,
   "dependencies": {
     "react": "^18.2.0",
@@ -12,7 +13,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "yarn build",
+    "deploy": "npx gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -33,6 +36,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^4.0.0",
     "sass": "^1.53.0"
   }
 }
